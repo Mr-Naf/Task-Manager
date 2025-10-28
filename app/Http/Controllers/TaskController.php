@@ -14,7 +14,7 @@ class TaskController extends Controller
     public function index()
     {
         $tasks = Task::with('subtasks')->get()->groupBy('priority_level')->sortByDesc('created_at');
-        return view('manageTasks', compact('tasks'));
+        return view('taskManager.index', compact('tasks'));
     }
 
     /**

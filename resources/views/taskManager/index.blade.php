@@ -91,6 +91,7 @@
         </div>
     </div>
 
+
     <!-- Add Task Modal -->
     <div class="modal fade" id="taskModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
@@ -139,50 +140,78 @@
         </div>
     </div>
 
+
     <!-- View Task Details Modal -->
+
     <div class="modal fade" id="viewDetailsModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-md modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Task Details</h5>
-                    <button class="btn-close" data-bs-dismiss="modal"></button>
+        <div class="modal-dialog modal-dialog-centered modal-md">
+            <div class="modal-content shadow border-0 rounded-3">
+
+                <!-- Header -->
+                <div class="modal-header bg-light border-bottom-0 py-3">
+                    <h5 class="modal-title fw-bold text-dark">Task Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
-                <div class="modal-body">
+
+                <!-- Body -->
+                <div class="modal-body px-4 pb-3">
+
+                    <!-- Title & Priority -->
+                    <div class="mb-3 pb-2 border-bottom">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <label class="form-label fw-semibold text-muted mb-0">Title</label>
+                            <span id="view-priority_level" class="badge bg-secondary text-capitalize"></span>
+                        </div>
+                        <p id="view-title" class="fw-bold mb-1 mt-1 fs-6 text-dark"></p>
+                    </div>
+
+                    <!-- Description -->
                     <div class="mb-3">
-                        <label class="form-label fw-bold">Title</label>
-                        <p id="view-title" class="form-control-plaintext"></p>
+                        <label class="form-label fw-semibold text-muted mb-1">Description</label>
+                        <p id="view-description" class="form-control-plaintext mb-0 ps-1 text-dark"></p>
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label fw-bold">Description</label>
-                        <p id="view-description" class="form-control-plaintext"></p>
+
+                    <!-- Subtask Tabs -->
+                    <ul class="nav nav-tabs small mb-3" id="subtaskTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active py-1 px-3" id="pending-tab" data-bs-toggle="tab"
+                                data-bs-target="#pending-subtasks" type="button" role="tab">🕓 Pending</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link py-1 px-3" id="completed-tab" data-bs-toggle="tab"
+                                data-bs-target="#completed-subtasks" type="button" role="tab">✅ Completed</button>
+                        </li>
+                    </ul>
+
+                    <div class="tab-content border rounded-2" id="subtaskTabsContent" style="min-height: 120px;">
+                        <div class="tab-pane fade show active" id="pending-subtasks" role="tabpanel">
+                            <ul id="view-pending-subtasks" class="list-group list-group-flush small"></ul>
+                        </div>
+                        <div class="tab-pane fade" id="completed-subtasks" role="tabpanel">
+                            <ul id="view-completed-subtasks" class="list-group list-group-flush small"></ul>
+                        </div>
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label fw-bold">Priority</label>
-                        <p id="view-priority_level" class="form-control-plaintext text-capitalize"></p>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label fw-bold">Subtasks</label>
-                        <ul id="view-subtasks" class="list-group small"></ul>
-                    </div>
-                    <div class="mb-2">
-                        <label class="form-label fw-semibold">Created At</label>
-                        <p id="view-created-at" class="form-control-plaintext"></p>
-                    </div>
-                    <div class="mb-0">
-                        <label class="form-label fw-semibold">Updated At :</label>
-                        <p id="view-updated-at" class="form-control-plaintext"></p>
+
+                    <!-- Timestamps -->
+                    <div class="mt-3 border-top pt-2 small text-muted">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <span class="fw-semibold text-muted"></span>
+                            <div class="text-end">
+                                <div>Created: <span id="view-created-at" class="fw-semibold text-dark"></span></div>
+                                <div>Updated: <span id="view-updated-at" class="fw-semibold text-dark"></span></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button class="btn btn-primary" id="editTaskBtn">
-                        <i><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                class="bi bi-pencil" viewBox="0 0 16 16">
-                                <path
-                                    d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325" />
-                            </svg></i> Edit
+
+                <!-- Footer -->
+                <div class="modal-footer border-0 bg-white d-flex justify-content-end py-2 pe-3">
+                    <button class="btn btn-sm btn-outline-secondary me-2 px-3" data-bs-dismiss="modal">Close</button>
+                    <button class="btn btn-sm btn-primary px-3" id="editTaskBtn">
+                        <i class=""></i> Edit
                     </button>
                 </div>
+
             </div>
         </div>
     </div>
@@ -252,7 +281,6 @@
                 showConfirmButton: false,
                 timer: 3000,
                 timerProgressBar: true
-
             });
 
             $.ajaxSetup({
@@ -268,26 +296,26 @@
             $('#addCreateSubtask').click(function() {
                 createSubIndex++;
                 $('#create-subtasks-container').append(`
-            <div class="subtask-row d-flex align-items-center mb-2">
-                <input type="text" class="form-control me-2"
-                       name="subtasks[${createSubIndex}][text]"
-                       placeholder="Enter subtask">
-                <button type="button" class="btn btn-sm btn-danger remove-subtask">×</button>
-            </div>
-        `);
+                <div class="subtask-row d-flex align-items-center mb-2">
+                    <input type="text" class="form-control me-2"
+                        name="subtasks[${createSubIndex}][text]"
+                        placeholder="Enter subtask">
+                    <button type="button" class="btn btn-sm btn-danger remove-subtask">×</button>
+                </div>
+            `);
             });
 
             // Add / Remove Subtasks (Edit)
             $('#addEditSubtask').click(function() {
                 editSubIndex++;
                 $('#edit-subtasks-container').append(`
-            <div class="subtask-row d-flex align-items-center mb-2">
-                <input type="hidden" name="subtasks[${editSubIndex}][completed]" value="0">
-                <input type="checkbox" class="me-2" name="subtasks[${editSubIndex}][completed]" value="1">
-                <input type="text" class="form-control me-2" name="subtasks[${editSubIndex}][text]" placeholder="Enter subtask">
-                <button type="button" class="btn btn-sm btn-danger remove-subtask">×</button>
-            </div>
-        `);
+                <div class="subtask-row d-flex align-items-center mb-2">
+                    <input type="hidden" name="subtasks[${editSubIndex}][completed]" value="0">
+                    <input type="checkbox" class="me-2" name="subtasks[${editSubIndex}][completed]" value="1">
+                    <input type="text" class="form-control me-2" name="subtasks[${editSubIndex}][text]" placeholder="Enter subtask">
+                    <button type="button" class="btn btn-sm btn-danger remove-subtask">×</button>
+                </div>
+            `);
             });
 
             $(document).on('click', '.remove-subtask', function() {
@@ -309,13 +337,13 @@
                 const container = getContainer(task.priority_level);
                 container.find('p.text-center').remove();
                 container.append(`
-            <div class="card task-card mb-2" data-id="${task.id}" data-priority="${task.priority_level}">
-                <div class="card-body p-2 justify-content-between d-flex">
-                    <span>${task.title}</span>
-                    <span>${new Date(task.created_at).toDateString().slice(4)}</span>
+                <div class="card task-card mb-2" data-id="${task.id}" data-priority="${task.priority_level}">
+                    <div class="card-body p-2 justify-content-between d-flex">
+                        <span>${task.title}</span>
+                        <span>${new Date(task.created_at).toDateString().slice(4)}</span>
+                    </div>
                 </div>
-            </div>
-        `);
+            `);
             }
 
             // Create Task
@@ -362,53 +390,67 @@
                     });
                 }
             });
+
             $('#saveTask').on('click', function() {
                 $('#taskForm').submit();
             });
 
-
-            // View Task
+            // VIEW TASK (with Pending/Completed Tabs)
             $(document).on('click', '.task-card', function() {
                 const id = $(this).data('id');
-
                 $.get('/tasks/' + id, function(data) {
                     $('#view-title').text(data.title);
-                    $('#view-description').text(data.description || 'No any description');
-                    $('#view-priority_level').text(data.priority_level);
+                    $('#view-description').text(data.description || 'No description');
+                    $('#view-priority_level').removeClass().addClass('badge text-capitalize')
+                        .addClass(
+                            data.priority_level === 'critical' ? 'bg-danger' :
+                            data.priority_level === 'high' ? 'bg-high text-dark' :
+                            data.priority_level === 'medium' ? 'bg-warning text-dark' : 'bg-success'
+                        ).text(data.priority_level);
                     $('#view-created-at').text(new Date(data.created_at).toDateString().slice(4));
                     $('#view-updated-at').text(new Date(data.updated_at).toDateString().slice(4));
 
-                    const subtasksContainer = $('#view-subtasks').empty();
-                    if (data.subtasks && data.subtasks.length) {
+                    const pendingList = $('#view-pending-subtasks').empty();
+                    const completedList = $('#view-completed-subtasks').empty();
+                    if (data.subtasks && data.subtasks.length > 0) {
+                        let hasPending = false,
+                            hasCompleted = false;
                         data.subtasks.forEach(sub => {
-                            subtasksContainer.append(`
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            ${sub.subtask_text}
-                            ${sub.is_completed
-                                ? '<span class="badge bg-success">Done</span>'
-                                : '<span class="badge bg-secondary">Pending</span>'}
-                        </li>
-                    `);
+                            const item =
+                                `<li class="list-group-item d-flex justify-content-between align-items-center">${sub.subtask_text}${sub.is_completed?
+                                    '<span class="badge bg-success">Done</span>':'<span class="badge bg-warning text-dark">Pending</span>'}</li>`;
+                            if (sub.is_completed) {
+                                completedList.append(item);
+                                hasCompleted = true;
+                            } else {
+                                pendingList.append(item);
+                                hasPending = true;
+                            }
                         });
+                        if (!hasPending) pendingList.append(
+                            '<li class="list-group-item text-muted">No pending subtasks</li>');
+                        if (!hasCompleted) completedList.append(
+                            '<li class="list-group-item text-muted">No completed subtasks</li>');
                     } else {
-                        subtasksContainer.append(
-                            '<li class="list-group-item text-muted">No subtasks</li>');
+                        pendingList.append(
+                            '<li class="list-group-item text-center text-muted">No subtasks available</li>'
+                        );
+                        completedList.append(
+                            '<li class="list-group-item text-center text-muted">No subtasks available</li>'
+                        );
                     }
 
                     $('#editTaskBtn').data('id', data.id);
                     $('#viewDetailsModal').modal('show');
-                }).fail(function() {
-                    Toast.fire({
-                        icon: 'error',
-                        title: 'Error loading task details'
-                    });
-                });
+                }).fail(() => Toast.fire({
+                    icon: 'error',
+                    title: 'Error loading task details'
+                }));
             });
 
-            // Edit Task (Load)
+            // EDIT TASK (Load)
             $(document).on('click', '#editTaskBtn', function() {
                 const id = $(this).data('id');
-
                 $.get('/tasks/' + id, function(data) {
                     $('#editForm input[name="id"]').val(data.id);
                     $('#edit-title').val(data.title);
@@ -416,74 +458,90 @@
                     $('#edit-priority_level').val(data.priority_level);
                     $('#edit-subtasks-container').empty();
                     editSubIndex = 0;
-
-                    (data.subtasks || []).forEach(function(sub) {
+                    (data.subtasks || []).forEach(sub => {
                         editSubIndex++;
                         $('#edit-subtasks-container').append(`
                     <div class="subtask-row d-flex align-items-center mb-2">
                         <input type="hidden" name="subtasks[${editSubIndex}][id]" value="${sub.id}">
                         <input type="hidden" name="subtasks[${editSubIndex}][completed]" value="0">
-                        <input type="checkbox" class="me-2" name="subtasks[${editSubIndex}][completed]" value="1" ${sub.is_completed ? 'checked' : ''}>
+                        <input type="checkbox" class="me-2" name="subtasks[${editSubIndex}][completed]" value="1" ${sub.is_completed?'checked':''}>
                         <input type="text" class="form-control me-2" name="subtasks[${editSubIndex}][text]" value="${sub.subtask_text}">
                         <button type="button" class="btn btn-sm btn-danger remove-subtask">×</button>
-                    </div>
-                `);
+                    </div>`);
                     });
-
                     $('#viewDetailsModal').modal('hide');
                     $('#EditTaskModal').modal('show');
-
-                }).fail(function() {
-                    Toast.fire({
-                        icon: 'error',
-                        title: 'Error loading task details'
-                    });
-                });
+                }).fail(() => Toast.fire({
+                    icon: 'error',
+                    title: 'Error loading task details'
+                }));
             });
 
-            // Update Task
+            // UPDATE TASK
             $('#updateTask').click(function() {
                 if (!$('#editForm').valid()) return;
-
                 const id = $('#editForm input[name="id"]').val();
                 const formData = new FormData($('#editForm')[0]);
-
-
                 $.ajax({
                     url: '/tasks/' + id,
                     method: 'POST',
                     data: formData,
                     processData: false,
                     contentType: false,
-                    success: function(res) {
+                    success: function(data) {
                         $('.task-card[data-id="' + id + '"]').remove();
-                        appendTaskCard(res);
-                        $('#view-title').text(res.title);
-                        $('#view-description').text(res.description || 'No any description');
-                        $('#view-priority_level').text(res.priority_level);
-                        $('#view-created-at').text(new Date(res.created_at).toDateString()
+                        appendTaskCard(data);
+                        $('#view-title').text(data.title);
+                        $('#view-description').text(data.description || 'No description');
+                        $('#view-priority_level').removeClass().addClass(
+                            'badge text-capitalize').addClass(
+                            data.priority_level === 'critical' ? 'bg-danger' :
+                            data.priority_level === 'high' ? 'bg-high text-dark' :
+                            data.priority_level === 'medium' ? 'bg-warning text-dark' :
+                            'bg-success'
+                        ).text(data.priority_level);
+                        $('#view-created-at').text(new Date(data.created_at).toDateString()
                             .slice(4));
-                        $('#view-updated-at').text(new Date(res.updated_at).toDateString()
+                        $('#view-updated-at').text(new Date(data.updated_at).toDateString()
                             .slice(4));
 
-                        const subtasksContainer = $('#view-subtasks').empty();
-                        if (res.subtasks && res.subtasks.length) {
-                            res.subtasks.forEach(sub => {
-                                subtasksContainer.append(`
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                ${sub.subtask_text}
-                                ${sub.is_completed
-                                    ? '<span class="badge bg-success">Done</span>'
-                                    : '<span class="badge bg-secondary">Pending</span>'}
-                            </li>
-                        `);
+                        const pendingList = $('#view-pending-subtasks').empty();
+                        const completedList = $('#view-completed-subtasks').empty();
+                        if (data.subtasks && data.subtasks.length > 0) {
+                            let hasPending = false,
+                                hasCompleted = false;
+                            data.subtasks.forEach(sub => {
+                                const item =
+                                    `<li class="list-group-item d-flex justify-content-between align-items-center">${sub.subtask_text}${sub.is_completed?
+                                        '<span class="badge bg-success">Done</span>':'<span class="badge bg-warning text-dark">Pending</span>'}</li>`;
+                                if (sub.is_completed) {
+                                    completedList.append(item);
+                                    hasCompleted = true;
+                                } else {
+                                    pendingList.append(item);
+                                    hasPending = true;
+                                }
                             });
+                            if (!hasPending) pendingList.append(
+                                '<li class="list-group-item text-muted">No pending subtasks</li>'
+                            );
+                            if (!hasCompleted) completedList.append(
+                                '<li class="list-group-item text-muted">No completed subtasks</li>'
+                            );
                         } else {
-                            subtasksContainer.append(
-                                '<li class="list-group-item text-muted">No subtasks</li>');
+                            pendingList.append(
+                                '<li class="list-group-item text-center text-muted">No subtasks available</li>'
+                            );
+                            completedList.append(
+                                '<li class="list-group-item text-center text-muted">No subtasks available</li>'
+                            );
                         }
+
                         $('#EditTaskModal').modal('hide');
                         $('#viewDetailsModal').modal('show');
+                        $('#editForm')[0].reset();
+                        $('#edit-subtasks-container').empty();
+                        editSubIndex = 0;
                         Toast.fire({
                             icon: 'success',
                             title: 'Task updated successfully!'
@@ -493,12 +551,12 @@
                         Toast.fire({
                             icon: 'error',
                             title: xhr.responseJSON?.message || 'Error updating task'
-                        });
+                        })
                     }
                 });
             });
 
-            // Delete Task
+            // DELETE TASK
             $('#deleteTask').click(function() {
                 const id = $('#editForm input[name="id"]').val();
                 Swal.fire({
@@ -531,19 +589,6 @@
                         });
                     }
                 });
-            });
-
-            // Reset Modals
-            $('#taskModal').on('hidden.bs.modal', function() {
-                $('#taskForm')[0].reset();
-                $('#create-subtasks-container').empty();
-                createSubIndex = 0;
-            });
-
-            $('#EditTaskModal').on('hidden.bs.modal', function() {
-                $('#editForm')[0].reset();
-                $('#edit-subtasks-container').empty();
-                editSubIndex = 0;
             });
         });
     </script>
