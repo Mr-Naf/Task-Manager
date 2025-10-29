@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\SubtaskController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -20,6 +21,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/tasks/{id}', [TaskController::class, 'show'])->name('tasks.show');
     Route::post('/tasks/{id}', [TaskController::class, 'update'])->name('tasks.update');
     Route::delete('/tasks/{id}', [TaskController::class, 'destroy'])->name('tasks.destroy');
+    // routes/web.php
+    Route::patch('/subtasks/{id}', [SubtaskController::class, 'update']);
+
 
     // Profile Routes
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

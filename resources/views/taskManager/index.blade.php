@@ -416,10 +416,18 @@
                         let hasPending = false,
                             hasCompleted = false;
                         data.subtasks.forEach(sub => {
-                            const item =
-                                `<li class="list-group-item d-flex justify-content-between align-items-center">${sub.subtask_text}${sub.is_completed?
-                                    '<span class="badge bg-success">Done</span>':'<span class="badge bg-warning text-dark">Pending</span>'}</li>`;
+                            const item = `
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <div class="d-flex align-items-center">
+                                            <input class="form-check-input me-2 view-subtask-checkbox" type="checkbox" data-id="${sub.id}" ${sub.is_completed ? 'checked disabled' : ''}>
+                                            <span>${sub.subtask_text}</span>
+                                        </div>
+                                        <span class="badge ${sub.is_completed ? 'bg-success' : 'bg-warning text-dark'}">
+                                            ${sub.is_completed ? 'Done' : 'Pending'}
+                                        </span>
+                                    </li>`;
                             if (sub.is_completed) {
+
                                 completedList.append(item);
                                 hasCompleted = true;
                             } else {
@@ -448,6 +456,75 @@
                 }));
             });
 
+            // Subtask Completion Toggle
+            $(document).on('change', '.view-subtask-checkbox', function() {
+                const cbox = $(this),
+                    id = cbox.data('id'),
+                    completed = cbox.is(':checked') ? 1 : 0;
+
+                $.ajax({
+                    url: '/subtasks/' + id,
+                    method: 'PATCH',
+                    data: {
+                        is_completed: completed
+                    },
+                    success: function() {
+                        const li = cbox.closest('li');
+                        const pendingList = $('#view-pending-subtasks');
+                        const completedList = $('#view-completed-subtasks');
+
+                        // Move item visually
+                        if (completed) {
+                            li.find('span.badge')
+                                .removeClass('bg-warning text-dark')
+                                .addClass('bg-success')
+                                .text('Done');
+                            completedList.append(li);
+                        } else {
+                            li.find('span.badge')
+                                .removeClass('bg-success')
+                                .addClass('bg-warning text-dark')
+                                .text('Pending');
+                            pendingList.append(li);
+                        }
+
+                        //  Remove “No pending/completed subtasks”
+                        if (pendingList.children('li').length === 0) {
+                            pendingList.append(
+                                '<li class="list-group-item text-muted">No pending subtasks</li>'
+                            );
+                        } else {
+                            pendingList.find('.text-muted:contains("No pending subtasks")')
+                                .remove();
+                        }
+
+                        if (completedList.children('li').length === 0) {
+                            completedList.append(
+                                '<li class="list-group-item text-muted">No completed subtasks</li>'
+                            );
+                        } else {
+                            completedList.find('.text-muted:contains("No completed subtasks")')
+                                .remove();
+                        }
+                        if (completed) cbox.prop('disabled', true);
+
+                        Toast.fire({
+                            icon: 'success',
+                            title: 'Subtask updated!'
+                        });
+                    },
+                    error: function() {
+                        cbox.prop('checked', !completed);
+                        Toast.fire({
+                            icon: 'error',
+                            title: 'Failed to update subtask'
+                        });
+                    }
+                });
+            });
+
+
+
             // EDIT TASK (Load)
             $(document).on('click', '#editTaskBtn', function() {
                 const id = $(this).data('id');
@@ -461,13 +538,13 @@
                     (data.subtasks || []).forEach(sub => {
                         editSubIndex++;
                         $('#edit-subtasks-container').append(`
-                    <div class="subtask-row d-flex align-items-center mb-2">
-                        <input type="hidden" name="subtasks[${editSubIndex}][id]" value="${sub.id}">
-                        <input type="hidden" name="subtasks[${editSubIndex}][completed]" value="0">
-                        <input type="checkbox" class="me-2" name="subtasks[${editSubIndex}][completed]" value="1" ${sub.is_completed?'checked':''}>
-                        <input type="text" class="form-control me-2" name="subtasks[${editSubIndex}][text]" value="${sub.subtask_text}">
-                        <button type="button" class="btn btn-sm btn-danger remove-subtask">×</button>
-                    </div>`);
+                        <div class="subtask-row d-flex align-items-center mb-2">
+                            <input type="hidden" name="subtasks[${editSubIndex}][id]" value="${sub.id}">
+                            <input type="hidden" name="subtasks[${editSubIndex}][completed]" value="0">
+                            <input type="checkbox" class="me-2" name="subtasks[${editSubIndex}][completed]" value="1" ${sub.is_completed?'checked':''}>
+                            <input type="text" class="form-control me-2" name="subtasks[${editSubIndex}][text]" value="${sub.subtask_text}">
+                            <button type="button" class="btn btn-sm btn-danger remove-subtask">×</button>
+                        </div>`);
                     });
                     $('#viewDetailsModal').modal('hide');
                     $('#EditTaskModal').modal('show');
@@ -511,9 +588,16 @@
                             let hasPending = false,
                                 hasCompleted = false;
                             data.subtasks.forEach(sub => {
-                                const item =
-                                    `<li class="list-group-item d-flex justify-content-between align-items-center">${sub.subtask_text}${sub.is_completed?
-                                        '<span class="badge bg-success">Done</span>':'<span class="badge bg-warning text-dark">Pending</span>'}</li>`;
+                                const item = `
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <div class="d-flex align-items-center">
+                                                <input class="form-check-input me-2 view-subtask-checkbox" type="checkbox" data-id="${sub.id}" ${sub.is_completed ? 'checked disabled' : ''}>
+                                                <span>${sub.subtask_text}</span>
+                                            </div>
+                                            <span class="badge ${sub.is_completed ? 'bg-success' : 'bg-warning text-dark'}">
+                                                ${sub.is_completed ? 'Done' : 'Pending'}
+                                            </span>
+                                        </li>`;
                                 if (sub.is_completed) {
                                     completedList.append(item);
                                     hasCompleted = true;
