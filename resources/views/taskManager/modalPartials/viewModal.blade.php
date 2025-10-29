@@ -30,11 +30,13 @@
                 <ul class="nav nav-tabs small mb-3" id="subtaskTabs" role="tablist">
                     <li class="nav-item" role="presentation">
                         <button class="nav-link active py-1 px-3" id="pending-tab" data-bs-toggle="tab"
-                            data-bs-target="#pending-subtasks" type="button" role="tab">🕓 Pending</button>
+                            data-bs-target="#pending-subtasks" type="button" role="tab"><i
+                                class="fa fa-hourglass-start"></i> Pending</button>
                     </li>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link py-1 px-3" id="completed-tab" data-bs-toggle="tab"
-                            data-bs-target="#completed-subtasks" type="button" role="tab">✅ Completed</button>
+                            data-bs-target="#completed-subtasks" type="button" role="tab"><i
+                                class="fa fa-check"></i> Completed</button>
                     </li>
                 </ul>
 
@@ -63,7 +65,7 @@
             <div class="modal-footer border-0 bg-white d-flex justify-content-end py-2 pe-3">
                 <button class="btn btn-sm btn-outline-secondary me-2 px-3" data-bs-dismiss="modal">Close</button>
                 <button class="btn btn-sm btn-primary px-3" id="editTaskBtn">
-                    <i class=""></i> Edit
+                    <i class="fa fa-pencil-alt"></i> Edit
                 </button>
             </div>
 
