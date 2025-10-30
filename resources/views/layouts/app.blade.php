@@ -19,7 +19,6 @@
     <style>
         html {
             scroll-behavior: smooth;
-
             /* Custom Scrollbar */
             scrollbar-width: thin;
             scrollbar-color: #888 #f0f0f0;

@@ -3,8 +3,8 @@
 @section('content')
     <div class="container mt-5">
         <div class="d-flex justify-content-between align-items-center mb-4" name="header">
-            <h2 class=" fw-semibold fs-4 text-dark mb-0">Task Manager</h2>
-            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#taskModal"> + Add Task</button>
+            <h2 class=" text-muted fw-semibold fs-4 text-dark mb-0">Task Manager</h2>
+            <button class="btn btn-primary fw-semibold shadow-lg" data-bs-toggle="modal" data-bs-target="#taskModal"> + Add Task</button>
         </div>
 
         <div class="row mt-5 ">
@@ -18,18 +18,18 @@
                                 data-priority="{{ $task->priority_level }}">
                                 <div class="card-body p-2 justify-content-between d-flex">
                                     <span>{{ $task->title }}</span>
-                                    <span>{{ $task->created_at->format('M d Y') }}</span>
+                                    <small class="text-muted">{{ $task->created_at->format('M d Y') }}</small>
                                 </div>
                             </div>
                         @empty
-                            <p class="text-center text-light-50">No critical tasks</p>
+                            <p class="text-center text-light-49">No critical tasks</p>
                         @endforelse
                     </div>
                 </div>
             </div>
 
             <!-- High Tasks -->
-            <div class="col-md-3">
+             <div class="col-md-3">
                 <div class="card  text-dark mb-4 border border-high">
                     <div class="card-header bg-high">High</div>
                     <div class="card-body" id="high-tasks">
@@ -38,7 +38,7 @@
                                 data-priority="{{ $task->priority_level }}">
                                 <div class="card-body p-2 justify-content-between d-flex">
                                     <span>{{ $task->title }}</span>
-                                    <span>{{ $task->created_at->format('M d Y') }}</span>
+                                    <small class="text-muted">{{ $task->created_at->format('M d Y') }}</small>
                                 </div>
                             </div>
                         @empty
@@ -58,7 +58,7 @@
                                 data-priority="{{ $task->priority_level }}">
                                 <div class="card-body p-2 justify-content-between d-flex">
                                     <span>{{ $task->title }}</span>
-                                    <span>{{ $task->created_at->format('M d Y') }}</span>
+                                    <small class="text-muted">{{ $task->created_at->format('M d Y') }}</small>
                                 </div>
                             </div>
                         @empty
@@ -78,12 +78,12 @@
                                 data-priority="{{ $task->priority_level }}">
                                 <div class="card-body p-2 justify-content-between d-flex">
                                     <span>{{ $task->title }}</span>
-                                    <span>{{ $task->created_at->format('M d Y') }}</span>
+                                    <small class="text-muted">{{ $task->created_at->format('M d Y') }}</small>
 
                                 </div>
                             </div>
                         @empty
-                            <p class="text-center text-light-50">No low priority tasks</p>
+                            <p class="text-center text-light-49">No low priority tasks</p>
                         @endforelse
                     </div>
                 </div>
@@ -135,7 +135,7 @@
                         placeholder="Enter subtask">
                     <button type="button" class="btn btn-sm btn-danger remove-subtask">×</button>
                 </div>
-            `);
+              `);
             });
 
             // Add / Remove Subtasks (Edit)
@@ -145,7 +145,7 @@
                 <div class="subtask-row d-flex align-items-center mb-2">
                     <input type="hidden" name="subtasks[${editSubIndex}][completed]" value="0">
                     <input type="checkbox" class="me-2" name="subtasks[${editSubIndex}][completed]" value="1">
-                    <input type="text" class="form-control me-2" name="subtasks[${editSubIndex}][text]" placeholder="Enter subtask">
+                    <input type="text" class="form-control me-2"    name="subtasks[${editSubIndex}][text]" placeholder="Enter subtask">
                     <button type="button" class="btn btn-sm btn-danger remove-subtask">×</button>
                 </div>
             `);
@@ -173,10 +173,10 @@
                 <div class="card task-card mb-2" data-id="${task.id}" data-priority="${task.priority_level}">
                     <div class="card-body p-2 justify-content-between d-flex">
                         <span>${task.title}</span>
-                        <span>${new Date(task.created_at).toDateString().slice(4)}</span>
+                        <small class="text-muted">${new Date(task.created_at).toDateString().slice(4)}</small>
                     </div>
                 </div>
-            `);
+                `);
             }
 
             // Create Task
@@ -191,8 +191,21 @@
                     },
                     priority_level: {
                         required: true
-                    }
+                    },
+
                 },
+                messages: {
+                        title: {
+                            required: "Please enter a title",
+                            minlength: "Title must be at least 3 characters"
+                        },
+                        description: {
+                            minlength: "Description must be at least 5 characters"
+                        },
+                        priority_level: {
+                            required: "Please select a priority"
+                        }
+                    },
                 errorClass: 'text-danger',
                 submitHandler: function(form) {
                     const formData = new FormData(form);
@@ -322,7 +335,7 @@
                         }
 
                         //  Remove “No pending/completed subtasks”
-                        if (pendingList.children('li').length === 0) {
+                        if (pendingList.children('li').length === 0 ) { //?
                             pendingList.append(
                                 '<li class="list-group-item text-muted">No pending subtasks</li>'
                             );
@@ -356,8 +369,6 @@
                 });
             });
 
-
-
             // EDIT TASK (Load)
             $(document).on('click', '#editTaskBtn', function() {
                 const id = $(this).data('id');
@@ -375,7 +386,7 @@
                             <input type="hidden" name="subtasks[${editSubIndex}][id]" value="${sub.id}">
                             <input type="hidden" name="subtasks[${editSubIndex}][completed]" value="0">
                             <input type="checkbox" class="me-2" name="subtasks[${editSubIndex}][completed]" value="1" ${sub.is_completed?'checked':''}>
-                            <input type="text" class="form-control me-2" name="subtasks[${editSubIndex}][text]" value="${sub.subtask_text}">
+                            <input type="text" class="form-control me-2"    name="subtasks[${editSubIndex}][text]" value="${sub.subtask_text}">
                             <button type="button" class="btn btn-sm btn-danger remove-subtask">×</button>
                         </div>`);
                     });

@@ -1,5 +1,5 @@
 <div class="modal fade" id="taskModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" style="max-width: 510px;">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 610px;">
         <div class="modal-content border-0 rounded-3 shadow">
             <div class="modal-header bg-light border-0">
                 <h5 class="modal-title">Add Task</h5>

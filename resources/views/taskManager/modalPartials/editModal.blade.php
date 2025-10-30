@@ -44,7 +44,6 @@
                     <div class="mb-3">
                         <label class="form-label fw-semibold">Subtasks</label>
                         <div id="edit-subtasks-container" class="list-group border rounded-3 p-2 bg-body-tertiary">
-                            <div class="text-muted small text-center py-2">No subtasks yet</div>
                         </div>
                         <button type="button" class="btn btn-sm btn-outline-secondary mt-2" id="addEditSubtask">
                             <i class="fa fa-plus me-1"></i> Add Subtask

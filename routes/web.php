@@ -21,8 +21,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/tasks/{id}', [TaskController::class, 'show'])->name('tasks.show');
     Route::post('/tasks/{id}', [TaskController::class, 'update'])->name('tasks.update');
     Route::delete('/tasks/{id}', [TaskController::class, 'destroy'])->name('tasks.destroy');
-    // routes/web.php
-    Route::patch('/subtasks/{id}', [SubtaskController::class, 'update']);
+
+    // Subtask Management Routes
+    Route::patch('/subtasks/{id}', [SubtaskController::class, 'update'])->name('subtasks.update');
 
 
     // Profile Routes
