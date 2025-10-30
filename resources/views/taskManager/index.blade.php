@@ -4,14 +4,15 @@
     <div class="container mt-5">
         <div class="d-flex justify-content-between align-items-center mb-4" name="header">
             <h2 class=" text-muted fw-semibold fs-4 text-dark mb-0">Task Manager</h2>
-            <button class="btn btn-primary fw-semibold shadow-lg" data-bs-toggle="modal" data-bs-target="#taskModal"> + Add Task</button>
+            <button class="btn btn-primary fw-semibold shadow-lg" data-bs-toggle="modal" data-bs-target="#taskModal"> + Add
+                Task</button>
         </div>
 
         <div class="row mt-5 ">
             <!-- Critical Tasks -->
             <div class="col-md-3">
-                <div class="card  text-white mb-4 border border-danger">
-                    <div class="card-header bg-danger">Critical</div>
+                <div class="card  text-black  mb-4 border border-danger">
+                    <div class="card-header fw-semibold bg-danger">Critical</div>
                     <div class="card-body" id="critical-tasks">
                         @forelse($tasks['critical'] as $task)
                             <div class="card task-card mb-2" data-id="{{ $task->id }}"
@@ -29,9 +30,9 @@
             </div>
 
             <!-- High Tasks -->
-             <div class="col-md-3">
-                <div class="card  text-dark mb-4 border border-high">
-                    <div class="card-header bg-high">High</div>
+            <div class="col-md-3">
+                <div class="card  text-black mb-4 border border-high">
+                    <div class="card-header fw-semibold bg-high">High</div>
                     <div class="card-body" id="high-tasks">
                         @forelse($tasks['high'] as $task)
                             <div class="card task-card mb-2" data-id="{{ $task->id }}"
@@ -50,8 +51,8 @@
 
             <!-- Medium Tasks -->
             <div class="col-md-3">
-                <div class="card  text-dark mb-4 border border-warning">
-                    <div class="card-header bg-warning">Medium</div>
+                <div class="card  text-dark  mb-4 border border-warning">
+                    <div class="card-header fw-semibold bg-warning">Medium</div>
                     <div class="card-body" id="medium-tasks">
                         @forelse($tasks['medium'] as $task)
                             <div class="card task-card mb-2" data-id="{{ $task->id }}"
@@ -70,8 +71,8 @@
 
             <!-- Low Tasks -->
             <div class="col-md-3">
-                <div class="card  text-white mb-4 border border-success">
-                    <div class="card-header  bg-success">Low</div>
+                <div class="card  text-black mb-4 border border-success">
+                    <div class="card-header  fw-semibold bg-success">Low</div>
                     <div class="card-body" id="low-tasks">
                         @forelse($tasks['low'] as $task)
                             <div class="card task-card mb-2" data-id="{{ $task->id }}"
@@ -107,13 +108,13 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
     <script>
         $(function() {
-
             const Toast = Swal.mixin({
                 toast: true,
                 position: 'top-end',
                 showConfirmButton: false,
                 timer: 3000,
                 timerProgressBar: true
+
             });
 
             $.ajaxSetup({
@@ -192,20 +193,19 @@
                     priority_level: {
                         required: true
                     },
-
                 },
                 messages: {
-                        title: {
-                            required: "Please enter a title",
-                            minlength: "Title must be at least 3 characters"
-                        },
-                        description: {
-                            minlength: "Description must be at least 5 characters"
-                        },
-                        priority_level: {
-                            required: "Please select a priority"
-                        }
+                    title: {
+                        required: "Please enter a title",
+                        minlength: "Title must be at least 3 characters"
                     },
+                    description: {
+                        minlength: "Description must be at least 5 characters"
+                    },
+                    priority_level: {
+                        required: "Please select a priority"
+                    }
+                },
                 errorClass: 'text-danger',
                 submitHandler: function(form) {
                     const formData = new FormData(form);
@@ -335,7 +335,7 @@
                         }
 
                         //  Remove “No pending/completed subtasks”
-                        if (pendingList.children('li').length === 0 ) { //?
+                        if (pendingList.children('li').length === 0) { //?
                             pendingList.append(
                                 '<li class="list-group-item text-muted">No pending subtasks</li>'
                             );
@@ -399,40 +399,85 @@
             });
 
             // UPDATE TASK
-            $('#updateTask').click(function() {
-                if (!$('#editForm').valid()) return;
-                const id = $('#editForm input[name="id"]').val();
-                const formData = new FormData($('#editForm')[0]);
-                $.ajax({
-                    url: '/tasks/' + id,
-                    method: 'POST',
-                    data: formData,
-                    processData: false,
-                    contentType: false,
-                    success: function(data) {
-                        $('.task-card[data-id="' + id + '"]').remove();
-                        appendTaskCard(data);
-                        $('#view-title').text(data.title);
-                        $('#view-description').text(data.description || 'No description');
-                        $('#view-priority_level').removeClass().addClass(
-                            'badge text-capitalize').addClass(
-                            data.priority_level === 'critical' ? 'bg-danger' :
-                            data.priority_level === 'high' ? 'bg-high text-dark' :
-                            data.priority_level === 'medium' ? 'bg-warning text-dark' :
-                            'bg-success'
-                        ).text(data.priority_level);
-                        $('#view-created-at').text(new Date(data.created_at).toDateString()
-                            .slice(4));
-                        $('#view-updated-at').text(new Date(data.updated_at).toDateString()
-                            .slice(4));
+            $('#editForm').validate({
+                rules: {
+                    title: {
+                        required: true,
+                        minlength: 3
+                    },
+                    description: {
+                        minlength: 5
+                    },
+                    priority_level: {
+                        required: true
+                    }
+                },
+                messages: {
+                    title: {
+                        required: "Please enter a title",
+                        minlength: "Title must be at least 3 characters"
+                    },
+                    description: {
+                        minlength: "Description must be at least 5 characters"
+                    },
+                    priority_level: {
+                        required: "Please select a priority"
+                    }
+                },
+                errorClass: 'text-danger',
+                highlight: function(element) {
+                    $(element).addClass('is-invalid');
+                },
+                unhighlight: function(element) {
+                    $(element).removeClass('is-invalid');
+                },
+                submitHandler: function(form) {
+                    const id = $('#editForm input[name="id"]').val();
+                    const formData = new FormData(form);
 
-                        const pendingList = $('#view-pending-subtasks').empty();
-                        const completedList = $('#view-completed-subtasks').empty();
-                        if (data.subtasks && data.subtasks.length > 0) {
-                            let hasPending = false,
-                                hasCompleted = false;
-                            data.subtasks.forEach(sub => {
-                                const item = `
+                    $.ajax({
+                        url: '/tasks/' + id,
+                        method: 'POST',
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        success: function(data) {
+                            // Replace old card
+                            $('.task-card[data-id="' + id + '"]').remove();
+                            appendTaskCard(data);
+
+                            // Update details modal
+                            $('#view-title').text(data.title);
+                            $('#view-description').text(data.description ||
+                                'No description');
+                            $('#view-priority_level')
+                                .removeClass()
+                                .addClass('badge text-capitalize')
+                                .addClass(
+                                    data.priority_level === 'critical' ?
+                                    'bg-danger' :
+                                    data.priority_level === 'high' ?
+                                    'bg-high text-dark' :
+                                    data.priority_level === 'medium' ?
+                                    'bg-warning text-dark' :
+                                    'bg-success'
+                                )
+                                .text(data.priority_level);
+
+                            $('#view-created-at').text(new Date(data.created_at)
+                                .toDateString().slice(4));
+                            $('#view-updated-at').text(new Date(data.updated_at)
+                                .toDateString().slice(4));
+
+                            // Update subtasks
+                            const pendingList = $('#view-pending-subtasks').empty();
+                            const completedList = $('#view-completed-subtasks').empty();
+
+                            if (data.subtasks && data.subtasks.length > 0) {
+                                let hasPending = false,
+                                    hasCompleted = false;
+                                data.subtasks.forEach(sub => {
+                                    const item = `
                                         <li class="list-group-item d-flex justify-content-between align-items-center">
                                             <div class="d-flex align-items-center">
                                                 <input class="form-check-input me-2 view-subtask-checkbox" type="checkbox" data-id="${sub.id}" ${sub.is_completed ? 'checked disabled' : ''}>
@@ -442,46 +487,57 @@
                                                 ${sub.is_completed ? 'Done' : 'Pending'}
                                             </span>
                                         </li>`;
-                                if (sub.is_completed) {
-                                    completedList.append(item);
-                                    hasCompleted = true;
-                                } else {
-                                    pendingList.append(item);
-                                    hasPending = true;
-                                }
-                            });
-                            if (!hasPending) pendingList.append(
-                                '<li class="list-group-item text-muted">No pending subtasks</li>'
-                            );
-                            if (!hasCompleted) completedList.append(
-                                '<li class="list-group-item text-muted">No completed subtasks</li>'
-                            );
-                        } else {
-                            pendingList.append(
-                                '<li class="list-group-item text-center text-muted">No subtasks available</li>'
-                            );
-                            completedList.append(
-                                '<li class="list-group-item text-center text-muted">No subtasks available</li>'
-                            );
-                        }
+                                    if (sub.is_completed) {
+                                        completedList.append(item);
+                                        hasCompleted = true;
+                                    } else {
+                                        pendingList.append(item);
+                                        hasPending = true;
+                                    }
+                                });
 
-                        $('#EditTaskModal').modal('hide');
-                        $('#viewDetailsModal').modal('show');
-                        $('#editForm')[0].reset();
-                        $('#edit-subtasks-container').empty();
-                        editSubIndex = 0;
-                        Toast.fire({
-                            icon: 'success',
-                            title: 'Task updated successfully!'
-                        });
-                    },
-                    error: function(xhr) {
-                        Toast.fire({
-                            icon: 'error',
-                            title: xhr.responseJSON?.message || 'Error updating task'
-                        })
-                    }
-                });
+                                if (!hasPending)
+                                    pendingList.append(
+                                        '<li class="list-group-item text-muted">No pending subtasks</li>'
+                                    );
+                                if (!hasCompleted)
+                                    completedList.append(
+                                        '<li class="list-group-item text-muted">No completed subtasks</li>'
+                                    );
+                            } else {
+                                pendingList.append(
+                                    '<li class="list-group-item text-center text-muted">No subtasks available</li>'
+                                );
+                                completedList.append(
+                                    '<li class="list-group-item text-center text-muted">No subtasks available</li>'
+                                );
+                            }
+
+                            // Reset modal & form
+                            $('#EditTaskModal').modal('hide');
+                            $('#viewDetailsModal').modal('show');
+                            form.reset();
+                            $('#edit-subtasks-container').empty();
+                            editSubIndex = 0;
+
+                            Toast.fire({
+                                icon: 'success',
+                                title: 'Task updated successfully!'
+                            });
+                        },
+                        error: function(xhr) {
+                            Toast.fire({
+                                icon: 'error',
+                                title: xhr.responseJSON?.message ||
+                                    'Error updating task'
+                            });
+                        }
+                    });
+                }
+            });
+            //  UPDATE BUTTON CLICK
+            $('#updateTask').on('click', function() {
+                $('#editForm').submit();
             });
 
             // DELETE TASK

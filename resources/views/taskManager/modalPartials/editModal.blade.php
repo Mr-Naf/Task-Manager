@@ -19,7 +19,6 @@
                         <div class="input-group">
                             <input type="text" class="form-control" id="edit-title" name="title"
                                 placeholder="Enter task title" required>
-                            <div class="invalid-feedback">Title is required.</div>
                         </div>
                     </div>
 
