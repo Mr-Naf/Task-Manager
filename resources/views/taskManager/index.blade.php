@@ -263,13 +263,20 @@
                             hasCompleted = false;
                         data.subtasks.forEach(sub => {
                             const item = `
-                                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                                        <div class="d-flex align-items-center">
-                                            <input class="form-check-input me-2 view-subtask-checkbox" type="checkbox" data-id="${sub.id}" ${sub.is_completed ? 'checked disabled' : ''}>
-                                            <span>${sub.subtask_text}</span>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center ">
+                                        <div class="d-flex align-items-center justify-content-between subtask ">
+                                            <div>
+                                                <input class="form-check-input me-2 view-subtask-checkbox"
+                                                    type="checkbox"
+                                                    data-id="${sub.id}"
+                                                    ${sub.is_completed ? 'checked disabled' : ''}>
+                                                <span>${sub.subtask_text}</span>
+                                            </div>
+                                              ${sub.is_completed ? `<small class="text-muted ms-3 ">Completed: ${new Date(sub.updated_at).toLocaleDateString()}</small>` : ''}
                                         </div>
+
                                         <span class="badge ${sub.is_completed ? 'bg-success' : 'bg-warning text-dark'}">
-                                            ${sub.is_completed ? 'Done' : 'Pending'}
+                                            ${sub.is_completed ? 'Done'  : 'Pending'}
                                         </span>
                                     </li>`;
                             if (sub.is_completed) {
@@ -324,7 +331,10 @@
                             li.find('span.badge')
                                 .removeClass('bg-warning text-dark')
                                 .addClass('bg-success')
-                                .text('Done');
+                                .text('Done')
+                            completedList.append(li);
+                            li.find('div.subtask')
+                                .append(` <small class="text-muted ms-3 ">Completed: ${new Date().toLocaleDateString()}</small>`);
                             completedList.append(li);
                         } else {
                             li.find('span.badge')
@@ -478,15 +488,22 @@
                                     hasCompleted = false;
                                 data.subtasks.forEach(sub => {
                                     const item = `
-                                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                                            <div class="d-flex align-items-center">
-                                                <input class="form-check-input me-2 view-subtask-checkbox" type="checkbox" data-id="${sub.id}" ${sub.is_completed ? 'checked disabled' : ''}>
-                                                <span>${sub.subtask_text}</span>
-                                            </div>
-                                            <span class="badge ${sub.is_completed ? 'bg-success' : 'bg-warning text-dark'}">
-                                                ${sub.is_completed ? 'Done' : 'Pending'}
-                                            </span>
-                                        </li>`;
+                                            <li class="list-group-item d-flex justify-content-between align-items-center ">
+                                                <div class="d-flex align-items-center justify-content-between subtask ">
+                                                    <div>
+                                                        <input class="form-check-input me-2 view-subtask-checkbox"
+                                                            type="checkbox"
+                                                            data-id="${sub.id}"
+                                                            ${sub.is_completed ? 'checked disabled' : ''}>
+                                                        <span>${sub.subtask_text}</span>
+                                                    </div>
+                                                    ${sub.is_completed ? `<small class="text-muted ms-3 ">Completed: ${new Date(sub.updated_at).toLocaleDateString()}</small>` : ''}
+                                                </div>
+
+                                                <span class="badge ${sub.is_completed ? 'bg-success' : 'bg-warning text-dark'}">
+                                                    ${sub.is_completed ? 'Done'  : 'Pending'}
+                                                </span>
+                                            </li>`;
                                     if (sub.is_completed) {
                                         completedList.append(item);
                                         hasCompleted = true;
